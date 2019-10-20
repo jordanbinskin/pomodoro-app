@@ -1,0 +1,85 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.min.css">
+<style>
+</style>
+
+<body>
+  <h1>Pomodoro App</h1>
+  <p>by jordyshores</p>
+  <div id="clock">
+
+  </div>
+  <div class="controls">
+    <button id="start">
+      start
+    </button>
+    <button id="stop">
+      stop
+    </button>
+  </div>
+</body>
+<script>
+
+let update;
+let timeState;
+
+// Should start a timer.
+const timer = (interval) => {
+  let start = getTime();
+  const clockTime = getClock();
+
+  update = setInterval(() => {
+    let millis = Date.now() - start;
+    let fixedSeconds = Number.parseFloat(millis/1000).toFixed(0);
+    clockTime.innerHTML = fixedSeconds;
+  }, 1000);
+
+  setTimeout(() => {
+    clearInterval(update)
+  }, interval);
+
+  return update;
+}
+
+const getTime = () => timeState ? timeState : Date.now();
+
+
+const getClock = () => document.querySelector('.time');
+
+const clearTimer = (id) => clearInterval(id);
+
+const clock = () => `
+  <div class="circle">
+    <span class="time"></span>
+  </div>
+`
+
+const app = document.querySelector('#clock');
+app.innerHTML = clock();
+
+document.querySelector('#start').addEventListener('click', () => {
+  let time = 'interval' in window ? interval : 250000;
+  timer(time);
+});
+
+document.querySelector('#stop').addEventListener('click', () => {
+  clearInterval(update)
+  timeState = getClock().innerText;
+  console.log(timeState)
+})
+// Should be able to stop timer
+// Should reset timer
+// Should enter custom time
+// Should send notification when time elapses
+// Should provide tasks 
+// Should provide preset, 25 work and 5 min break options
+</script>
+
+</html>
